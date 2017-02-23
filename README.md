@@ -4,6 +4,12 @@ My coding assignment building a transaction validator app using React.js
 
 Try the [deployed app](http://markbleichert.github.io/rabobank-assessment/) or read below hot to run it locally.
 
+# The assignment and implementation
+
+View the [assignment](https://github.com/markbleichert/rabobank-assessment/blob/master/instructions.html) and
+[documentation](https://github.com/markbleichert/weather-assessment/blob/master/USAGE.md) for more details on how the
+application is implemented.
+
 ## How to run locally
 
 First checkout the repository (`$ git clone https://github.com/markbleichert/rabobank-assessment.git`) or download it as a [ZIP file](https://github.com/markbleichert/rabobank-assessment/archive/master.zip).
