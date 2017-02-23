@@ -6,7 +6,7 @@ Try the [deployed app](http://markbleichert.github.io/rabobank-assessment/) or r
 
 ## How to run locally
 
-First checkout the repository (`$ git clone https://github.com/markbleichert/rabobank-assesment.git`) or download it as a [ZIP file](https://github.com/markbleichert/rabobank-assesment/archive/master.zip).
+First checkout the repository (`$ git clone https://github.com/markbleichert/rabobank-assessment.git`) or download it as a [ZIP file](https://github.com/markbleichert/rabobank-assessment/archive/master.zip).
 
 Then install dependencies:
 
@@ -28,7 +28,7 @@ You can now run the app on [http://localhost:3000]
 Check out the repository and run
 
 ```bash
-$ git clone https://github.com/markbleichert/rabobank-assesment.git`
+$ git clone https://github.com/markbleichert/rabobank-assessment.git`
 ```
 
 Then install dependencies:
