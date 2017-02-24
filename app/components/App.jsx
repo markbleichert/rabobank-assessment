@@ -152,7 +152,11 @@ class App extends Component {
           >
             { this.state.data.map((item, index) => {
 
-              const isCurrent = (this.state.ticker === index);
+              // current record flag should be false when in 'static list' mode
+              // or else first record will be selected. We do not want that !
+              // when 'live' iterating through list this flag is important to
+              // determine active record.
+              const isCurrent = this.state.isRunning && (this.state.ticker === index);
               const isDuplicate = validator.isDuplicate(item.reference);
               const isUnbalanced = !validator.isBalanced(item.reference);
 
