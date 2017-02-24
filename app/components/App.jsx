@@ -24,11 +24,11 @@ class App extends Component {
       isRunning: false
     };
 
+    // setup initial state
     this.state = state;
     this.initialState = Object.assign({}, state);
 
-    this.handleLoadCsv = this.handleLoadCsv.bind(this);
-    this.handleLoadXml = this.handleLoadXml.bind(this);
+    // bind all event handlers
     this.onTabSelect = this.onTabSelect.bind(this);
     this.onNextTick = this.onNextTick.bind(this);
     this.onSortPropertyChange = this.onSortPropertyChange.bind(this);
@@ -36,22 +36,13 @@ class App extends Component {
   }
 
   componentDidMount() {
+    // load initial data for first tab
     this.handleLoadXml();
   }
 
-  loadMergedData() {
-		this.fetchAll()
-  		.then((arr) => {
-  			this.setState({data: arr})
-  		})
-  		.catch((error) => {
-  			this.setState({error})
-  		});
-	}
-
-  fetchAll() {
-		var p1 = this.loadXML(xml);
-		var p2 = this.loadCSV(csv);
+  loadAll() {
+		const p1 = this.loadXML(xml);
+		const p2 = this.loadCSV(csv);
 
 		// merge the results of to promise calls
 		return Promise.all([p1, p2]).then((results) => {
@@ -82,24 +73,65 @@ class App extends Component {
     });
   }
 
-  handleLoadXml(e) {
-    parser.parseXml(xml, (err, data) => {
-      this.validator = new Validator(data);
-      this.validator.run();
-      this.setState({
-        data
-      });
+  validateData(data) {
+    return new Promise((resolve, reject) => {
+      try {
+        this.validator = new Validator(data);
+        this.validator.run();
+        resolve(data);
+      } catch(e) {
+        reject(e);
+      }
     });
   }
 
-  handleLoadCsv(e) {
-    const data = parser.parseCsv(csv);
-    this.validator = new Validator(data);
-    this.validator.run();
+  handleLoadAll() {
+		this.loadAll()
+      .then((data) => {
+        return this.validateData(data);
+      })
+  		.then((data) => {
+  			this.setState({data})
+  		})
+  		.catch((error) => {
+  			this.setState({
+          data: [],
+          error
+        })
+  		});
+	}
 
-    this.setState({
-      data
-    });
+
+  handleLoadXml() {
+    this.loadXML(xml)
+      .then((data) => {
+        return this.validateData(data);
+      })
+      .then((data) => {
+        this.setState({data});
+      })
+      .catch((error) => {
+        this.setState({
+          data: [],
+          error
+        });
+      })
+  }
+
+  handleLoadCsv() {
+    this.loadCSV(csv)
+      .then((data) => {
+        return this.validateData(data);
+      })
+      .then((data) => {
+        this.setState({data});
+      })
+      .catch((error) => {
+        this.setState({
+          data: [],
+          error
+        });
+      })
   }
 
   onTabSelect(tab) {
@@ -111,32 +143,11 @@ class App extends Component {
         this.handleLoadCsv();
         break;
       case 'allPanel':
-        this.loadMergedData();
+        this.handleLoadAll();
         break;
       default:
         // do nothing ?
     }
-  }
-
-  renderAlert() {
-    return this.state.data.map((item, index) => {
-      // validate properties against expected schema
-      // return array of invalid properties
-      var hasProps = this.validator.hasInvalidProps(item.reference);
-
-      if (hasProps) {
-        const props = this.validator.getInvalidProps(item.reference).toString();
-        // @todo move this into seperate component ?
-        // Probably in a real life app showing multiple messages like this
-        // would not be very good UX design.
-        return (
-          <div key={index} className="alert alert-dismissible alert-warning">
-            <strong>Oh snap !&nbsp;</strong>
-            {`Reference ${item.reference} has '${props}' property missing..`}
-          </div>
-        );
-      }
-    });
   }
 
   onNextTick(index) {
@@ -160,8 +171,35 @@ class App extends Component {
     });
   }
 
+  renderAlert() {
+    return this.state.data.map((item, index) => {
+      // validate properties against expected schema
+      // return array of invalid properties
+      var hasProps = this.validator.hasInvalidProps(item.reference);
+
+      if (hasProps) {
+        const props = this.validator.getInvalidProps(item.reference).toString();
+        // @todo move this into seperate component ?
+        // Probably in a real life app showing multiple messages like this
+        // would not be very good UX design.
+        return (
+          <div key={index} className="alert alert-dismissible alert-warning">
+            <strong>Oh snap !&nbsp;</strong>
+            {`Reference ${item.reference} has '${props}' property missing..`}
+          </div>
+        );
+      }
+    });
+  }
+
   render() {
     const validator = this.validator;
+
+    if (this.state.error) {
+        return (
+          <div>{this.state.error.stack}</div>
+        )
+    }
 
     return (
       <div className="app container">
