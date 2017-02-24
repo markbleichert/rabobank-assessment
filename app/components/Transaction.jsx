@@ -47,13 +47,12 @@ export default class Transaction extends React.Component {
         </div>
         <div className="sub">
           <span>{data.description}</span>
-
           <div>
             <span>{data.accountNumber}</span>
             <span>-</span>
-              <span>{data.startBalance}</span>
-              <span>{data.mutation}</span>
-              <span className={balanceClasses}>{data.endBalance}</span>
+            <span>{data.startBalance}</span>
+            <span>{data.mutation}</span>
+            <span className={balanceClasses}>{data.endBalance}</span>
           </div>
         </div>
       </div>
