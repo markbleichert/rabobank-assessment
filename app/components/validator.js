@@ -79,6 +79,10 @@ class Validator {
   }
 
   hasInvalidProps(ref) {
+    return this.propsMap[ref] && this.propsMap[ref].length > 0;
+  }
+
+  getInvalidProps(ref) {
     return this.propsMap[ref];
   }
 }

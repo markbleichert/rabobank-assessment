@@ -1,9 +1,8 @@
 import React, { Component } from 'react';
+import classnames from 'classnames';
 
 import xml from '../data/records.xml';
 import csv from '../data/records.csv';
-
-import classnames from 'classnames';
 
 import Validator from './validator.js';
 import parser from './parser.js';
@@ -40,6 +39,49 @@ class App extends Component {
     this.handleLoadXml();
   }
 
+  loadMergedData() {
+		this.fetchAll()
+  		.then((arr) => {
+  			this.setState({data: arr})
+  		})
+  		.catch((error) => {
+  			this.setState({error})
+  		});
+	}
+
+  fetchAll() {
+		var p1 = this.loadXML(xml);
+		var p2 = this.loadCSV(csv);
+
+		// merge the results of to promise calls
+		return Promise.all([p1, p2]).then((results) => {
+			return [].concat.apply([], results);
+		});
+	}
+
+
+  loadCSV(data) {
+    return new Promise((resolve, reject) => {
+      try {
+        const d = parser.parseCsv(data);
+        resolve(d);
+      } catch(e) {
+        reject(e);
+      }
+    });
+  }
+
+  loadXML(data) {
+    return new Promise((resolve, reject) => {
+      parser.parseXml(data, (err, d) => {
+        if (err) {
+          reject(err);
+        }
+        resolve(d);
+      })
+    });
+  }
+
   handleLoadXml(e) {
     parser.parseXml(xml, (err, data) => {
       this.validator = new Validator(data);
@@ -68,6 +110,9 @@ class App extends Component {
       case 'csvPanel':
         this.handleLoadCsv();
         break;
+      case 'allPanel':
+        this.loadMergedData();
+        break;
       default:
         // do nothing ?
     }
@@ -76,12 +121,18 @@ class App extends Component {
   renderAlert() {
     return this.state.data.map((item, index) => {
       // validate properties against expected schema
-      var props = this.validator.hasInvalidProps(item.reference);
-      if (props && props.length > 0) {
+      // return array of invalid properties
+      var hasProps = this.validator.hasInvalidProps(item.reference);
+
+      if (hasProps) {
+        const props = this.validator.getInvalidProps(item.reference).toString();
+        // @todo move this into seperate component ?
+        // Probably in a real life app showing multiple messages like this
+        // would not be very good UX design.
         return (
           <div key={index} className="alert alert-dismissible alert-warning">
-            <strong>Oh snap ! </strong>
-            {`Reference ${item.reference} has '${props.toString()}' property missing..`}
+            <strong>Oh snap !&nbsp;</strong>
+            {`Reference ${item.reference} has '${props}' property missing..`}
           </div>
         );
       }
@@ -117,7 +168,7 @@ class App extends Component {
         <Tabs activeTab={0} onTabSelect={this.onTabSelect}>
           <Tabs.Panel id="xmlPanel" title="Load XML">
             <div>
-              <span>{this.renderAlert()}</span>
+              {this.renderAlert()}
               <RadioGroup
                 label="Sort by"
                 onChange={this.onSortPropertyChange}
@@ -136,6 +187,16 @@ class App extends Component {
                 {value: 'accountNumber', label: 'Accountnumber'},
                 {value: 'reference', label: 'Reference'},
                 {value: 'endBalance', label: 'Balance'}
+              ]}
+            />
+          </Tabs.Panel>
+          <Tabs.Panel id="allPanel" title="Load All">
+            <RadioGroup
+              label="Sort by"
+              onChange={this.onSortPropertyChange}
+              options={[
+                {value: 'accountNumber', label: 'Accountnumber'},
+                {value: 'reference', label: 'Reference'}
               ]}
             />
           </Tabs.Panel>
