@@ -2,7 +2,7 @@ import csvtojson from 'csvtojson';
 
 export default (data, cb) => {
   const arr = [];
-  // not implemented yet
+
   csvtojson({ noheader: true })
     .fromString(data)
     .on('csv', (csvRow) => {
