@@ -7,6 +7,10 @@
             "jsx": true
         }
     },
+     "env": {
+      "node": true,
+      "mocha": true
+    },
     "extends": "airbnb",
     "rules": {
       "react/prop-types": 2,

@@ -18,24 +18,30 @@ export default {
         return cb(err);
       }
 
-      // start processing at :
-      const arr = obj.records.record;
+      let newArray = [];
 
-      const newArray = arr.map((item) => {
-        const newItem = {};
-        // create key value pair objects
-        Object.keys(item).forEach((key) => {
-          // reference is inside 'special' $ object
-          if (key === '$') {
-            newItem.reference = item.$.reference;
-          } else {
-            // all other fields are array like objects
-            newItem[key] = item[key][0];
-          }
+      try {
+        // start processing at :
+        const arr = obj.records.record;
+
+        newArray = arr.map((item) => {
+          const newItem = {};
+          // create key value pair objects
+          Object.keys(item).forEach((key) => {
+            // reference is inside 'special' $ object
+            if (key === '$') {
+              newItem.reference = item.$.reference;
+            } else {
+              // all other fields are array like objects
+              newItem[key] = item[key][0];
+            }
+          });
+
+          return newItem;
         });
-
-        return newItem;
-      });
+      } catch (e) {
+        return cb(e);
+      }
 
       return cb(null, newArray);
     });
