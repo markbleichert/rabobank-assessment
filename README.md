@@ -62,6 +62,7 @@ $ open index.html
 
 * [React](http://facebook.github.io/react/).
 * [classnames](https://www.npmjs.com/package/classnames) —  class name generator.
+* [xml2js]() - JS Sax parser implementation for parsing xml to json.
 
 ### Styles
 
@@ -74,7 +75,7 @@ $ open index.html
 
 ### Debugging
 
-* nothing yet
+* [ESlint](http://eslint.org/) - Linting for JS and JSX
 
 
 ## Author
