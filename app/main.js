@@ -1,7 +1,9 @@
 import React from 'react';
+import ReactDOM from 'react-dom';
 import App from './components/App.jsx';
 
-React.render(
-	<App />,
-	document.getElementById('main')
+/*eslint-disable */
+ReactDOM.render(
+  <App />,
+  document.getElementById('main')
 );

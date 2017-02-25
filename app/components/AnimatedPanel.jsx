@@ -1,5 +1,4 @@
-import React, { Component } from 'react';
-import classnames from 'classnames';
+import React from 'react';
 import PlayButton from './PlayButton.jsx';
 
 export default class AnimatedPanel extends React.Component {
@@ -13,12 +12,9 @@ export default class AnimatedPanel extends React.Component {
   static get propTypes() {
     return {
       isRunning: React.PropTypes.bool,
-      onClick: React.PropTypes.func
+      onClick: React.PropTypes.func,
+      children: React.PropTypes.array.isRequired
     };
-  }
-
-  constructor(props) {
-    super(props);
   }
 
   render() {
@@ -31,13 +27,13 @@ export default class AnimatedPanel extends React.Component {
               active={this.props.isRunning}
               onClick={this.props.onClick}
             />
-          <span className="title-label">&nbsp;Live validator</span>
+            <span className="title-label">&nbsp;Live validator</span>
           </div>
         </div>
         <div className="panel-body no-padding">
           {this.props.children}
         </div>
       </div>
-    )
+    );
   }
 }

@@ -22,17 +22,16 @@ class PlayButton extends React.Component {
 
     const buttonClasses = classnames({
       'btn btn-default btn-xs': true,
-      [this.props.className] : !!this.props.className
+      [this.props.className]: !!this.props.className
     });
 
     return (
-        <button
-          ref="button"
-          className={buttonClasses}
-          onClick={this.props.onClick}
-        >
-          { this.props.active ? pause : play }
-        </button>
+      <button
+        className={buttonClasses}
+        onClick={this.props.onClick}
+      >
+        { this.props.active ? pause : play }
+      </button>
     );
   }
 }

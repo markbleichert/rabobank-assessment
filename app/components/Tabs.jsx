@@ -6,7 +6,10 @@ import '../styles/tabs.less';
 export default class Tabs extends React.Component {
   static get defaultProps() {
     return {
-      activeTab: 0
+      activeTab: 0,
+      onTabPanelClick: () => {},
+      onTabSelect: () => {},
+
     };
   }
 
@@ -15,13 +18,13 @@ export default class Tabs extends React.Component {
       onTabPanelClick: React.PropTypes.func,
       onTabSelect: React.PropTypes.func,
       activeTab: React.PropTypes.number,
-      children: React.PropTypes.array
+      children: React.PropTypes.array.isRequired
     };
   }
 
   constructor(props) {
     super(props);
-    
+
     const state = {
       activeTab: props.activeTab
     };
@@ -128,24 +131,12 @@ export default class Tabs extends React.Component {
   }
 }
 
-// create a child component
-class Panel extends React.Component {
-  static get propTypes() {
-    return {
-      id: React.PropTypes.string.isRequired,
-      title: React.PropTypes.string.isRequired,
-      children: React.PropTypes.object,
-      disabled: React.PropTypes.bool
-    }
-  }
+const Panel = (props) => {
+  return <div>{props.children}</div>;
+};
 
-  render() {
-    if (this.props.disabled) {
-      return <div>Not available</div>;
-    }
-    return <div>{this.props.children}</div>;
-  }
-}
-
+Panel.propTypes = {
+  children: React.PropTypes.element.isRequired,
+};
 
 Tabs.Panel = Panel;

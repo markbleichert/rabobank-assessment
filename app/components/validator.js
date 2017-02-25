@@ -20,18 +20,18 @@ class Validator {
 
   // returns an array of properties that do not match interface
   checkProperties(obj) {
-    return this.fields.filter((key, index) => !this.hasProperty(obj, key));
+    return this.fields.filter(key => !this.hasProperty(obj, key));
   }
 
   // returns an array duplicate values
-  checkDuplicates(prop='reference') {
+  checkDuplicates(prop = 'reference') {
     const count = items =>
       items.reduce((a, b) => {
-        return Object.assign(a, {[b[prop]]: (a[b[prop]] || 0) + 1})
+        return Object.assign(a, { [b[prop]]: (a[b[prop]] || 0) + 1 });
       }, {});
 
     const duplicates = obj =>
-      Object.keys(obj).filter((a) => obj[a] > 1);
+      Object.keys(obj).filter(a => obj[a] > 1);
 
     return duplicates(count(this.data));
   }
@@ -39,7 +39,7 @@ class Validator {
   // checks if start balance +/- mutation equals end balance
   // uses unary operators to convert strings to numbers
   checkBalance(item) {
-    return Math.round((+item.startBalance + +item.mutation) * 100) /100 === +item.endBalance;
+    return Math.round((+item.startBalance + +item.mutation) * 100) / 100 === +item.endBalance;
   }
 
   // creates a map with references and balance (true/false)
@@ -55,7 +55,7 @@ class Validator {
   buildPropsMap() {
     this.propsMap = {};
     this.data.forEach((item) => {
-      const props = this.checkProperties(item)
+      const props = this.checkProperties(item);
 
       if (props.length > 0) {
         this.propsMap[item.reference] = props;

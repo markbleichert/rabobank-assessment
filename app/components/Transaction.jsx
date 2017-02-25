@@ -1,4 +1,4 @@
-import React, { Component } from 'react';
+import React from 'react';
 import classnames from 'classnames';
 
 export default class Transaction extends React.Component {
@@ -10,15 +10,10 @@ export default class Transaction extends React.Component {
 
   static get propTypes() {
     return {
-      current: React.PropTypes.bool,
-      unbalanced: React.PropTypes.bool,
-      duplicate: React.PropTypes.bool,
+      unbalanced: React.PropTypes.bool.isRequired,
+      duplicate: React.PropTypes.bool.isRequired,
       data: React.PropTypes.object
     };
-  }
-
-  constructor(props) {
-    super(props);
   }
 
   render() {
@@ -31,7 +26,7 @@ export default class Transaction extends React.Component {
 
     const refClasses = classnames({
       'well well-sm': true,
-      'duplicates': props.duplicate
+      duplicates: props.duplicate
     });
 
     const rowClasses = classnames({

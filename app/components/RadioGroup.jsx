@@ -4,14 +4,16 @@ class RadioGroup extends React.Component {
   static get propTypes() {
     return {
       label: React.PropTypes.string,
-      options: React.PropTypes.array
-    }
+      options: React.PropTypes.array,
+      onChange: React.PropTypes.func
+    };
   }
 
   static get defaultProps() {
     return {
       label: 'label',
-      options: []
+      options: [],
+      onChange: () => {}
     };
   }
 
@@ -43,7 +45,8 @@ class RadioGroup extends React.Component {
             <input
               type="radio" value={option.value}
               checked={this.state.selectedOption === option.value}
-              onChange={this.handleOptionChange} />
+              onChange={this.handleOptionChange}
+            />
             {option.label}
           </label>
         </div>
@@ -57,7 +60,7 @@ class RadioGroup extends React.Component {
         <label className="label label-success cheapspace">{this.props.label}</label>
         {this.renderOptions()}
       </form>
-    )
+    );
   }
 }
 

@@ -1,5 +1,4 @@
 import React, { Component } from 'react';
-import classnames from 'classnames';
 
 import xml from '../data/records.xml';
 import csv from '../data/records.csv';
@@ -41,14 +40,14 @@ class App extends Component {
   }
 
   loadAll() {
-		const p1 = this.loadXML(xml);
-		const p2 = this.loadCSV(csv);
+    const p1 = this.loadXML(xml);
+    const p2 = this.loadCSV(csv);
 
-		// merge the results of to promise calls
-		return Promise.all([p1, p2]).then((results) => {
-			return [].concat.apply([], results);
-		});
-	}
+    // merge the results of to promise calls
+    return Promise.all([p1, p2]).then((results) => {
+      return [].concat.apply([], results);
+    });
+  }
 
 
   loadCSV(data) {
@@ -56,7 +55,7 @@ class App extends Component {
       try {
         const d = parser.parseCsv(data);
         resolve(d);
-      } catch(e) {
+      } catch (e) {
         reject(e);
       }
     });
@@ -69,7 +68,7 @@ class App extends Component {
           reject(err);
         }
         resolve(d);
-      })
+      });
     });
   }
 
@@ -79,27 +78,27 @@ class App extends Component {
         this.validator = new Validator(data);
         this.validator.run();
         resolve(data);
-      } catch(e) {
+      } catch (e) {
         reject(e);
       }
     });
   }
 
   handleLoadAll() {
-		this.loadAll()
+    this.loadAll()
       .then((data) => {
         return this.validateData(data);
       })
-  		.then((data) => {
-  			this.setState({data})
-  		})
-  		.catch((error) => {
-  			this.setState({
+      .then((data) => {
+        this.setState({ data });
+      })
+      .catch((error) => {
+        this.setState({
           data: [],
           error
-        })
-  		});
-	}
+        });
+      });
+  }
 
 
   handleLoadXml() {
@@ -108,14 +107,14 @@ class App extends Component {
         return this.validateData(data);
       })
       .then((data) => {
-        this.setState({data});
+        this.setState({ data });
       })
       .catch((error) => {
         this.setState({
           data: [],
           error
         });
-      })
+      });
   }
 
   handleLoadCsv() {
@@ -124,18 +123,18 @@ class App extends Component {
         return this.validateData(data);
       })
       .then((data) => {
-        this.setState({data});
+        this.setState({ data });
       })
       .catch((error) => {
         this.setState({
           data: [],
           error
         });
-      })
+      });
   }
 
   onTabSelect(tab) {
-    switch(tab.id) {
+    switch (tab.id) {
       case 'xmlPanel':
         this.handleLoadXml();
         break;
@@ -153,12 +152,12 @@ class App extends Component {
   onNextTick(index) {
     this.setState({
       ticker: index
-    })
+    });
   }
 
   onSortPropertyChange(value) {
     const fnc = parser.sortBy(value, false);
-    var newArray = this.state.data.sort(fnc);
+    const newArray = this.state.data.sort(fnc);
 
     this.setState({
       data: newArray
@@ -172,10 +171,11 @@ class App extends Component {
   }
 
   renderAlert() {
+    // eslint-disable-next-line array-callback-return
     return this.state.data.map((item, index) => {
       // validate properties against expected schema
       // return array of invalid properties
-      var hasProps = this.validator.hasInvalidProps(item.reference);
+      const hasProps = this.validator.hasInvalidProps(item.reference);
 
       if (hasProps) {
         const props = this.validator.getInvalidProps(item.reference).toString();
@@ -196,9 +196,9 @@ class App extends Component {
     const validator = this.validator;
 
     if (this.state.error) {
-        return (
-          <div>{this.state.error.stack}</div>
-        )
+      return (
+        <div>{this.state.error.stack}</div>
+      );
     }
 
     return (
@@ -211,8 +211,8 @@ class App extends Component {
                 label="Sort by"
                 onChange={this.onSortPropertyChange}
                 options={[
-                  {value: 'accountNumber', label: 'Accountnumber'},
-                  {value: 'reference', label: 'Reference'}
+                  { value: 'accountNumber', label: 'Accountnumber' },
+                  { value: 'reference', label: 'Reference' }
                 ]}
               />
             </div>
@@ -222,9 +222,9 @@ class App extends Component {
               label="Sort by"
               onChange={this.onSortPropertyChange}
               options={[
-                {value: 'accountNumber', label: 'Accountnumber'},
-                {value: 'reference', label: 'Reference'},
-                {value: 'endBalance', label: 'Balance'}
+                { value: 'accountNumber', label: 'Accountnumber' },
+                { value: 'reference', label: 'Reference' },
+                { value: 'endBalance', label: 'Balance' }
               ]}
             />
           </Tabs.Panel>
@@ -233,8 +233,8 @@ class App extends Component {
               label="Sort by"
               onChange={this.onSortPropertyChange}
               options={[
-                {value: 'accountNumber', label: 'Accountnumber'},
-                {value: 'reference', label: 'Reference'}
+                { value: 'accountNumber', label: 'Accountnumber' },
+                { value: 'reference', label: 'Reference' }
               ]}
             />
           </Tabs.Panel>
@@ -243,7 +243,8 @@ class App extends Component {
         <Player
           isRunning={this.state.isRunning}
           onChange={this.onNextTick}
-          max={this.state.data.length}>
+          max={this.state.data.length}
+        >
 
           <AnimatedPanel
             isRunning={this.state.isRunning}
@@ -268,7 +269,7 @@ class App extends Component {
                     unbalanced={isUnbalanced}
                   />
                 </div>
-              )
+              );
             })
            }
           </AnimatedPanel>
