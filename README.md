@@ -6,7 +6,7 @@ Try the [deployed app](http://markbleichert.github.io/rabobank-assessment/) or r
 
 # The assignment and implementation
 
-View the [assignment](https://github.com/markbleichert/rabobank-assessment/blob/master/instructions.html) and
+View the [assignment](https://markbleichert.github.io/rabobank-assessment/instructions.html) and
 [documentation](https://github.com/markbleichert/rabobank-assessment/blob/master/USAGE.md) for more details on how the
 application is implemented.
 
