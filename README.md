@@ -12,7 +12,7 @@ application is implemented.
 
 ## How to run locally
 
-First checkout the repository (`$ git clone https://github.com/markbleichert/rabobank-assessment.git`) or download it as a [ZIP file](https://github.com/markbleichert/rabobank-assessment/archive/master.zip).
+First checkout the repository(`$ git clone https://github.com/markbleichert/rabobank-assessment.git`) or download it as a [ZIP file](https://github.com/markbleichert/rabobank-assessment/archive/master.zip).
 
 Then install dependencies:
 
