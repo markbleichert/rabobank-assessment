@@ -1,4 +1,4 @@
-# React Weather App
+# React Validator App
 
 My coding assignment building a transaction validator app using React.js
 
