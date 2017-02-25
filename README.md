@@ -29,6 +29,14 @@ $ npm start
 You can now run the app on [http://localhost:3000]
 
 
+## How to run tests
+
+From your terminal you can execute all tests for the parser and validator.
+
+```
+$ npm run test
+```
+
 ## How to run compiled build version
 
 Check out the repository and run
@@ -72,6 +80,10 @@ $ open index.html
 
 * [Webpack](http://webpack.github.io/).
 * [Babel](http://babeljs.io/) (as a [Webpack loader](https://github.com/babel/babel-loader)) — ES6/JSX transformation.
+
+### Testing
+
+* [Mocha](https://mochajs.org/) - Mocha testing framework with Chai assertions.
 
 ### Debugging
 
