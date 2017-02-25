@@ -28,15 +28,6 @@ $ npm start
 
 You can now run the app on [http://localhost:3000]
 
-
-## How to run tests
-
-From your terminal you can execute all tests for the parser and validator.
-
-```
-$ npm run test
-```
-
 ## How to run compiled build version
 
 Check out the repository and run
@@ -61,6 +52,13 @@ And open in your browser:
 
 ```bash
 $ open index.html
+```
+## How to run tests
+
+From your terminal you can execute all tests for the parser and validator.
+
+```
+$ npm run test
 ```
 
 
