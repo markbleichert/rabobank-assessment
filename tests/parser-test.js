@@ -1,19 +1,29 @@
 import { expect } from 'chai';
 import parser from '../app/components/parser.js';
-import { xml as xmlString } from './data.js';
+import cvsStringParser from './csv-helper.js';
+import { xml as xmlString, csv as csvString } from './data.js';
 
 describe('parse data', () => {
-  describe.skip('parse csv string to json', () => {
+  describe('parse csv string to json', () => {
     it('should return an error when input is null', () => {
-      // not implemented yet
+      // not implemented
     });
 
-    it('should return an error when input is not a valid csv string', () => {
-      // not implemented yet
+    it('should return array with bad data when input is not a valid csv string', (done) => {
+      cvsStringParser('bad csv string', (err, data) => {
+        expect(err).to.be.equal(null);
+        expect(data).to.be.deep.equal([['bad csv string']]);
+        done();
+      });
     });
 
-    it('should parse csv string to json', () => {
-      // not implemented yet
+    it('should parse csv string to json', (done) => {
+      cvsStringParser(csvString, (err, data) => {
+        expect(err).to.be.equal(null);
+        expect(data).to.be.an('array');
+        expect(data.length).to.be.equal(11);
+        done();
+      });
     });
   });
 
