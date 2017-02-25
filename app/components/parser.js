@@ -47,6 +47,12 @@ export default {
     });
   },
 
+  // @todo should be implemented with csvtojson module
+  // this implementation assumes that webpack will have
+  // parsed csv to json. This function nearly transforms
+  // from one json format to another.
+  //
+  // for an example look in tests: csv-helper.js
   parseCsv(data) {
     // make a copy and leave original data as-is.
     const arr = data.slice(0);
