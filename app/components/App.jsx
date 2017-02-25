@@ -86,12 +86,8 @@ class App extends Component {
 
   handleLoadAll() {
     this.loadAll()
-      .then((data) => {
-        return this.validateData(data);
-      })
-      .then((data) => {
-        this.setState({ data });
-      })
+      .then(data => this.validateData(data))
+      .then(data => this.setState({ data }))
       .catch((error) => {
         this.setState({
           data: [],
@@ -103,12 +99,8 @@ class App extends Component {
 
   handleLoadXml() {
     this.loadXML(xml)
-      .then((data) => {
-        return this.validateData(data);
-      })
-      .then((data) => {
-        this.setState({ data });
-      })
+      .then(data => this.validateData(data))
+      .then(data => this.setState({ data }))
       .catch((error) => {
         this.setState({
           data: [],
@@ -119,12 +111,8 @@ class App extends Component {
 
   handleLoadCsv() {
     this.loadCSV(csv)
-      .then((data) => {
-        return this.validateData(data);
-      })
-      .then((data) => {
-        this.setState({ data });
-      })
+      .then(data => this.validateData(data))
+      .then(data => this.setState({ data }))
       .catch((error) => {
         this.setState({
           data: [],
