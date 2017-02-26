@@ -66,8 +66,8 @@ $ npm run test
 
 ### Environment
 
-* Node 5.5
-* Npm 3.3.12
+* [Node 5.5](https://nodejs.org/en/)
+* [Npm 3.3.12](https://www.npmjs.com/)
 
 ### App
 
