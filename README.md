@@ -64,6 +64,11 @@ $ npm run test
 
 ## What’s inside
 
+### Environment
+
+* Node 5.5
+* Npm 3.3.12
+
 ### App
 
 * [React](http://facebook.github.io/react/).
