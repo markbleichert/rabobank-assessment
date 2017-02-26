@@ -120,18 +120,17 @@ class App extends Component {
   }
 
   onTabSelect(tab) {
-    switch (tab.id) {
-      case 'xmlPanel':
-        this.handleLoadXml();
-        break;
-      case 'csvPanel':
-        this.handleLoadCsv();
-        break;
-      case 'allPanel':
-        this.handleLoadAll();
-        break;
-      default:
-        // do nothing ?
+    const map = {
+      xmlPanel: 'handleLoadXml',
+      csvPanel: 'handleLoadCsv',
+      allPanel: 'handleLoadAll'
+    };
+
+    if (tab.id in map) {
+      const method = map[tab.id];
+      this[method]();
+    } else {
+      console.warn('unable to finde appropriate handler');
     }
   }
 
