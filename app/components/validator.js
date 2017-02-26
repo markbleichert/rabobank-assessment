@@ -26,9 +26,7 @@ class Validator {
   // returns an array duplicate values
   checkDuplicates(prop = 'reference') {
     const count = items =>
-      items.reduce((a, b) => {
-        return Object.assign(a, { [b[prop]]: (a[b[prop]] || 0) + 1 });
-      }, {});
+      items.reduce((a, b) => Object.assign(a, { [b[prop]]: (a[b[prop]] || 0) + 1 }), {});
 
     const duplicates = obj =>
       Object.keys(obj).filter(a => obj[a] > 1);

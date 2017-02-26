@@ -6,6 +6,7 @@ export default {
 
     /*eslint-disable */
     return (a, b) => {
+      // @todo: refactor this as its unreadable and inconcise
       return a = key(a), b = key(b), ((a > b) - (b > a));
     }
     /*eslint-enable */

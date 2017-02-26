@@ -44,9 +44,7 @@ class App extends Component {
     const p2 = this.loadCSV(csv);
 
     // merge the results of to promise calls
-    return Promise.all([p1, p2]).then((results) => {
-      return [].concat.apply([], results);
-    });
+    return Promise.all([p1, p2]).then(arr => [].concat(...arr));
   }
 
 
