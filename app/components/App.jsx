@@ -72,13 +72,13 @@ class App extends Component {
 
   validateData(data) {
     return new Promise((resolve, reject) => {
+      this.validator = new Validator(data);
       try {
-        this.validator = new Validator(data);
         this.validator.run();
-        resolve(data);
       } catch (e) {
         reject(e);
       }
+      resolve(data);
     });
   }
 
