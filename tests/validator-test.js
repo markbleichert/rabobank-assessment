@@ -52,6 +52,8 @@ describe('validate data', () => {
     it('should return false when transaction item does not balance', () => {
       const validator = new Validator(json);
 
+      // do NOT run validator and check internals
+
       // correct
       expect(validator.checkBalance({
         startBalance: '32.01',
@@ -80,7 +82,15 @@ describe('validate data', () => {
         endBalance: '59.13'
       })).to.be.equal(true);
     });
-  });
 
-  // ... more test
+    it('should return validation result by transaction reference', () => {
+      const validator = new Validator(json);
+      validator.run();
+
+      // balance ok
+      expect(validator.isBalanced('163585')).to.be.equal(true);
+      // balance not ok
+      expect(validator.isBalanced('175885')).to.be.equal(false);
+    });
+  });
 });
