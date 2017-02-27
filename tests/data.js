@@ -1,3 +1,18 @@
+/*eslint-disable */
+const json = [
+  {"reference":"163585","badproperty":"NL90ABNA0585647886","description":"Candy for Vincent Bakker","startBalance":"32.01","mutation":"+27.12","endBalance":"59.13"},
+  {"reference":"175885","accountNumber":"NL43AEGO0773393871","description":"Clothes for Richard de Vries","startBalance":"5429","mutation":"-939","endBalance":"6368"},
+  {"reference":"126297","accountNumber":"NL93ABNA0585619023","description":"Candy for Vincent Dekker","startBalance":"105.24","mutation":"-25.89","endBalance":"79.35"},
+  {"reference":"159130","accountNumber":"NL91RABO0315273637","description":"Subscription for Daniël Bakker","startBalance":"38.62","mutation":"+4.53","endBalance":"43.15"},
+  {"reference":"121333","accountNumber":"NL43AEGO0773393871","description":"Subscription for Richard Theuß","startBalance":"46.62","mutation":"+20.52","endBalance":"67.14"},
+  {"reference":"198497","accountNumber":"NL91RABO0315273637","description":"Tickets from Richard Dekker","startBalance":"91.96","mutation":"+39.96","endBalance":"131.92"},
+  {"reference":"181742","accountNumber":"NL91RABO0315273637","description":"Candy from Daniël de Vries","startBalance":"10.1","mutation":"-0.3","endBalance":"9.8"},
+  {"reference":"130728","accountNumber":"NL32RABO0195610843","description":"Clothes from Richard de Vries","startBalance":"85.22","mutation":"+45.86","endBalance":"131.08"},
+  {"reference":"146009","accountNumber":"NL90ABNA0585647886","description":"Flowers for Jan Theuß","startBalance":"99.25","mutation":"+8.06","endBalance":"107.31"},
+  {"reference":"146009","accountNumber":"NL90ABNA0585647886","description":"Flowers for Jan Theuß","startBalance":"99.25","mutation":"+8.06","endBalance":"107.31"},
+  {"reference":"190406","accountNumber":"NL91RABO0315273637","description":"Subscription for Daniël Theuß","startBalance":"3980","mutation":"+1000","endBalance":"4981"}
+];
+
 const csv = `Reference,Account Number,Description,Start Balance,Mutation,End Balance
 137243,NL93ABNA0585619023,Candy from Rik King,13.33,+38.58,51.91
 112806,NL90ABNA0585647886,Candy for Vincent King,16.91,-38.13,-21.22
@@ -90,4 +105,4 @@ const xml = `<records>
   </record>
 </records>`;
 
-export { xml, csv };
+export { xml, csv, json };

@@ -1,5 +1,6 @@
 class Validator {
   constructor(data) {
+    this.error = null;
     // array of objects
     this.data = data;
     // interface definition
@@ -23,15 +24,18 @@ class Validator {
     return this.fields.filter(key => !this.hasProperty(obj, key));
   }
 
-  // returns an array duplicate values
-  checkDuplicates(prop = 'reference') {
-    const count = items =>
-      items.reduce((a, b) => Object.assign(a, { [b[prop]]: (a[b[prop]] || 0) + 1 }), {});
+  countDuplicates(prop) {
+    return this.data.reduce((a, b) => Object.assign(a, { [b[prop]]: (a[b[prop]] || 0) + 1 }), {});
+  }
 
+  // returns an array of 'unique' duplicate values
+  checkDuplicates(prop = 'reference') {
     const duplicates = obj =>
       Object.keys(obj).filter(a => obj[a] > 1);
 
-    return duplicates(count(this.data));
+    const arr = this.countDuplicates(prop);
+
+    return duplicates(arr);
   }
 
   // checks if start balance +/- mutation equals end balance
@@ -63,9 +67,17 @@ class Validator {
 
   // implementation that runs all validation
   run() {
-    this.duplicates = this.checkDuplicates();
-    this.buildBalanceMap();
-    this.buildPropsMap();
+    try {
+      this.duplicates = this.checkDuplicates();
+      this.buildBalanceMap();
+      this.buildPropsMap();
+
+      // reset error in case run method
+      // is called more than once
+      this.error = null;
+    } catch (e) {
+      this.error = e;
+    }
   }
 
   isDuplicate(ref) {
