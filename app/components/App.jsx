@@ -1,15 +1,12 @@
 import React, { Component } from 'react';
 
-import xml from '../data/records.xml';
-import csv from '../data/records.csv';
-
-import Validator from './validator.js';
-import parser from './parser.js';
 import Tabs from './Tabs.jsx';
 import Player from './Player.jsx';
 import RadioGroup from './RadioGroup.jsx';
 import Transaction from './Transaction.jsx';
 import AnimatedPanel from './AnimatedPanel.jsx';
+
+import Actions from '../flux/Actions.js';
 
 import '../styles/main.less';
 
@@ -32,105 +29,46 @@ class App extends Component {
     this.onNextTick = this.onNextTick.bind(this);
     this.onSortPropertyChange = this.onSortPropertyChange.bind(this);
     this.onTogglePlayer = this.onTogglePlayer.bind(this);
+    this.onDataChange = this.onDataChange.bind(this);
+  }
+
+  static get propTypes() {
+    return {
+      datastore: React.PropTypes.object.isRequired
+    };
+  }
+
+  onDataChange() {
+    this.setState({
+      data: this.props.datastore.getList(),
+    });
+  }
+
+  componentWillMount() {
+    this.props.datastore.addChangeListener(this.onDataChange);
+  }
+
+  componentWillUnmount() {
+    this.props.datastore.removeChangeListener(this.onDataChange);
   }
 
   componentDidMount() {
     // load initial data for first tab
-    this.handleLoadXml();
-  }
-
-  loadAll() {
-    const p1 = this.loadXML(xml);
-    const p2 = this.loadCSV(csv);
-
-    // merge the results of to promise calls
-    return Promise.all([p1, p2]).then(arr => [].concat(...arr));
-  }
-
-
-  loadCSV(data) {
-    return new Promise((resolve, reject) => {
-      try {
-        const d = parser.parseCsv(data);
-        resolve(d);
-      } catch (e) {
-        reject(e);
-      }
-    });
-  }
-
-  loadXML(data) {
-    return new Promise((resolve, reject) => {
-      parser.parseXml(data, (err, d) => {
-        if (err) {
-          reject(err);
-        }
-        resolve(d);
-      });
-    });
-  }
-
-  validateData(data) {
-    return new Promise((resolve, reject) => {
-      this.validator = new Validator(data);
-      try {
-        this.validator.run();
-      } catch (e) {
-        reject(e);
-      }
-      resolve(data);
-    });
-  }
-
-  handleLoadAll() {
-    this.loadAll()
-      .then(data => this.validateData(data))
-      .then(data => this.setState({ data }))
-      .catch((error) => {
-        this.setState({
-          data: [],
-          error
-        });
-      });
-  }
-
-
-  handleLoadXml() {
-    this.loadXML(xml)
-      .then(data => this.validateData(data))
-      .then(data => this.setState({ data }))
-      .catch((error) => {
-        this.setState({
-          data: [],
-          error
-        });
-      });
-  }
-
-  handleLoadCsv() {
-    this.loadCSV(csv)
-      .then(data => this.validateData(data))
-      .then(data => this.setState({ data }))
-      .catch((error) => {
-        this.setState({
-          data: [],
-          error
-        });
-      });
+    Actions.fetchData();
   }
 
   onTabSelect(tab) {
     const map = {
-      xmlPanel: 'handleLoadXml',
-      csvPanel: 'handleLoadCsv',
-      allPanel: 'handleLoadAll'
+      xmlPanel: 'xml',
+      csvPanel: 'csv',
+      allPanel: 'all'
     };
 
     if (tab.id in map) {
-      const method = map[tab.id];
-      this[method]();
+      const type = map[tab.id];
+      Actions.fetchData(type);
     } else {
-      console.warn('unable to finde appropriate handler');
+      console.warn('unable to finde appropriate data type.');
     }
   }
 
@@ -141,12 +79,7 @@ class App extends Component {
   }
 
   onSortPropertyChange(value) {
-    const fnc = parser.sortBy(value, false);
-    const newArray = this.state.data.sort(fnc);
-
-    this.setState({
-      data: newArray
-    });
+    Actions.sortData(value);
   }
 
   onTogglePlayer() {
@@ -160,10 +93,8 @@ class App extends Component {
     return this.state.data.map((item, index) => {
       // validate properties against expected schema
       // return array of invalid properties
-      const hasProps = this.validator.hasInvalidProps(item.reference);
-
-      if (hasProps) {
-        const props = this.validator.getInvalidProps(item.reference).toString();
+      if (this.props.datastore.hasInvalidProps(item.reference)) {
+        const props = this.props.datastore.getInvalidProps(item.reference).toString();
         // @todo move this into seperate component ?
         // Probably in a real life app showing multiple messages like this
         // would not be very good UX design.
@@ -178,8 +109,6 @@ class App extends Component {
   }
 
   render() {
-    const validator = this.validator;
-
     if (this.state.error) {
       return (
         <div>{this.state.error.stack}</div>
@@ -191,7 +120,7 @@ class App extends Component {
         <Tabs activeTab={0} onTabSelect={this.onTabSelect}>
           <Tabs.Panel id="xmlPanel" title="Load XML">
             <div>
-              {this.renderAlert()}
+              { this.renderAlert() }
               <RadioGroup
                 label="Sort by"
                 onChange={this.onSortPropertyChange}
@@ -236,22 +165,13 @@ class App extends Component {
             onClick={this.onTogglePlayer}
           >
             { this.state.data.map((item, index) => {
-
-              // current record flag should be false when in 'static list' mode
-              // or else first record will be selected. We do not want that !
-              // when 'live' iterating through list this flag is important to
-              // determine active record.
-              const isCurrent = this.state.isRunning && (this.state.ticker === index);
-              const isDuplicate = validator.isDuplicate(item.reference);
-              const isUnbalanced = !validator.isBalanced(item.reference);
-
               return (
                 <div key={index}>
                   <Transaction
                     data={item}
-                    current={isCurrent}
-                    duplicate={isDuplicate}
-                    unbalanced={isUnbalanced}
+                    current={this.state.isRunning && (this.state.ticker === index)}
+                    duplicate={this.props.datastore.isDuplicate(item.reference)}
+                    unbalanced={!this.props.datastore.isBalanced(item.reference)}
                   />
                 </div>
               );
@@ -260,7 +180,6 @@ class App extends Component {
           </AnimatedPanel>
         </Player>
       </div>
-
     );
   }
 }

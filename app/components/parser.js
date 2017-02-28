@@ -1,17 +1,6 @@
 import { parseString } from 'xml2js';
 
 export default {
-  sortBy(field) {
-    const key = x => x[field];
-
-    /*eslint-disable */
-    return (a, b) => {
-      // @todo: refactor this as its unreadable and inconcise
-      return a = key(a), b = key(b), ((a > b) - (b > a));
-    }
-    /*eslint-enable */
-  },
-
   parseXml(data, cb) {
     // use sax parser to process xml string
     parseString(data, (err, obj) => {
@@ -75,7 +64,7 @@ export default {
       return keyName.charAt(0).toLowerCase() + keyName.slice(1);
     };
 
-    const newArray = arr.map((item) => {
+    return arr.map((item) => {
       const newItem = {};
       item.forEach((value, index) => {
         // get key names
@@ -86,8 +75,5 @@ export default {
 
       return newItem;
     });
-
-    const sorter = this.sortBy('accountNumber');
-    return newArray.sort(sorter);
   }
 };
