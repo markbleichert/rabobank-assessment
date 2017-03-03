@@ -91,13 +91,8 @@ class App extends Component {
   renderAlert() {
     // eslint-disable-next-line array-callback-return
     return this.state.data.map((item, index) => {
-      // validate properties against expected schema
-      // return array of invalid properties
       if (this.props.datastore.hasInvalidProps(item.reference)) {
         const props = this.props.datastore.getInvalidProps(item.reference).toString();
-        // @todo move this into seperate component ?
-        // Probably in a real life app showing multiple messages like this
-        // would not be very good UX design.
         return (
           <div key={index} className="alert alert-dismissible alert-warning">
             <strong>Oh snap !&nbsp;</strong>
